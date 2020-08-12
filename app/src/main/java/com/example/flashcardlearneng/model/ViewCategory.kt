@@ -9,8 +9,11 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import com.example.flashcardlearneng.R
 
-class ViewCategory(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
+class ViewCategory : View {
+
+    var percentLearned :Float = 0f
 
     val colorContent = Color.parseColor("#9BFF00")
     val paintContent = Paint()
@@ -48,13 +51,22 @@ class ViewCategory(context: Context?, attrs: AttributeSet?) : View(context, attr
         paintRoundLearned.isAntiAlias = true
     }
 
+
+
+    constructor(context: Context, attrs: AttributeSet): super(context, attrs){
+        if (attrs != null) {
+            val a = context.obtainStyledAttributes(attrs, R.styleable.ViewCategoryStyle)
+            if (a.hasValue(R.styleable.ViewCategoryStyle_percentActive)) {
+                this.percentLearned = a.getFloat(R.styleable.ViewCategoryStyle_percentActive,0f)
+            }
+        }
+    }
+
+
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         drawContent(canvas)
-    }
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return super.onTouchEvent(event)
+        drawCirclePercent(canvas)
     }
 
     fun drawContent(canvas: Canvas?) {
@@ -79,7 +91,9 @@ class ViewCategory(context: Context?, attrs: AttributeSet?) : View(context, attr
             this.height / 2.toFloat(),
             paintCircleErase
         )
+    }
 
+    fun drawCirclePercent(canvas: Canvas?){
         canvas?.drawCircle(
             this.width.toFloat() - this.height / 2.toFloat(),
             this.height / 2.toFloat(),
@@ -94,9 +108,13 @@ class ViewCategory(context: Context?, attrs: AttributeSet?) : View(context, attr
                 this.width - (strokeWidth / 2 + offsetCirclePercent),
                 this.height - (offsetCirclePercent + strokeWidth / 2)
             ),
-            -90f, 70f, false, paintRoundLearned
+            -90f,  (this.percentLearned/100)*360, false, paintRoundLearned
         )
     }
+
+    /*fun drawPercent(canvas: Canvas?){
+        canvas?.drawText(this.percentLearned.toString()+"%",0,this.percentLearned.toString().length+1,)
+    }*/
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
