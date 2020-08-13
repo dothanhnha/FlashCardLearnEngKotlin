@@ -16,9 +16,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.example.flashcardlearneng.model.ViewCategory
-        app:percentActive = "25"
-        android:layout_width="300dp"
-        android:layout_height="100dp">
-    </com.example.flashcardlearneng.model.ViewCategory>
+        android:layout_width="328dp"
+        android:layout_height="62dp"
+        app:percentActive="67"
+        tools:layout_editor_absoluteX="8dp"></com.example.flashcardlearneng.model.ViewCategory>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

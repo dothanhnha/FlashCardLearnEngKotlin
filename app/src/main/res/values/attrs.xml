@@ -2,6 +2,6 @@
 
 <resources>
     <declare-styleable name="ViewCategoryStyle">
-        <attr name="percentActive" format="float" />
+        <attr name="percentActive" format="integer" />
     </declare-styleable>
 </resources>
