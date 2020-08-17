@@ -9,23 +9,11 @@ import com.example.flashcardlearneng.R
 
 class ViewCategory : View {
 
-    var label: String
-        set(value) {
-            this.label = value
-        }
-        get() = label
+    var label: String = "Person"
 
-    var amountWord: Int
-        set(value) {
-            this.amountWord = value
-        }
-        get() = amountWord
+    var amountWord: Int = 0
 
-    var percentLearned: Int
-        set(value) {
-        this.percentLearned = value
-    }
-        get() = percentLearned
+    var percentLearned: Int = 0
 
     val defaultFontSize: Float = 13f
 
@@ -50,6 +38,8 @@ class ViewCategory : View {
 
     val colorContentText = Color.parseColor("#000000")
     val paintLabelText = Paint()
+
+    val paintPercentText = Paint()
 
     val paintRound = Paint()
 
@@ -88,6 +78,12 @@ class ViewCategory : View {
         paintLabelText.strokeWidth = defaultFontSize
         paintLabelText.textSize = defaultFontSize
 
+        paintPercentText.color = colorContent
+        paintPercentText.style = Paint.Style.FILL
+        paintPercentText.isAntiAlias = true
+        paintPercentText.strokeWidth = defaultFontSize
+        paintPercentText.textSize = defaultFontSize
+
         paintDetailText.color = colorContentText
         paintDetailText.style = Paint.Style.FILL
         paintDetailText.isAntiAlias = true
@@ -107,6 +103,7 @@ class ViewCategory : View {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        calculateLocationTextPercent()
         drawContent(canvas)
         drawCirclePercent(canvas)
         drawPercent(canvas)
@@ -162,7 +159,7 @@ class ViewCategory : View {
             this.percentLearned.toString() + "%",
             this.locationTextPercent.x.toFloat(),
             this.locationTextPercent.y.toFloat(),
-            paintContent
+            paintPercentText
         )
     }
 
@@ -198,36 +195,23 @@ class ViewCategory : View {
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
+        calculateLocation()
+        calculateSizeTextPercent()
+    }
 
+    fun calculateSizeTextPercent() {
         this.radiusCirclePercent = this.height / 2 - (offsetCirclePercent + strokeWidth / 2)
 
         var scaleFlexText =
-            (this.radiusCirclePercent * 2 - this.strokeWidth - this.offsetTextCircle) / this.paintContent.measureText(
+            (this.radiusCirclePercent * 2 - this.strokeWidth - this.offsetTextCircle) / this.paintPercentText.measureText(
                 "100%"
             )
 
-        this.paintContent.textSize = this.defaultFontSize * scaleFlexText
+        this.paintPercentText.textSize = this.defaultFontSize * scaleFlexText
+    }
 
-
-        val calculatedBoundText = Rect()
-
-        paintContent.getTextBounds(
-            this.percentLearned.toString() + "%",
-            0,
-            this.percentLearned.toString().length + 1,
-            calculatedBoundText
-        )
-
-        val xCenterCirclePercent = this.width.toFloat() - this.height / 2.toFloat()
-        val yCenterCirclePercent = this.height / 2.toFloat()
-
-        this.locationTextPercent.x =
-            (xCenterCirclePercent - paintContent.measureText(this.percentLearned.toString() + "%") / 2).toInt()
-        this.locationTextPercent.y =
-            (yCenterCirclePercent + calculatedBoundText.height() / 2).toInt()
-
-        /////////////////////////
-
+    fun calculateLocation() {
+        var calculatedBoundText = Rect()
         val boundTextDefault = Rect()
 
         paintLabelText.getTextBounds(
@@ -259,5 +243,25 @@ class ViewCategory : View {
             this.width - this.height - paintDetailText.measureText(this.amountWord.toString())
                 .toInt()
         locationDetail.y = height - offsetDetailBottom.toInt()
+    }
+
+    fun calculateLocationTextPercent() {
+
+        val calculatedBoundText = Rect()
+
+        paintPercentText.getTextBounds(
+            this.percentLearned.toString() + "%",
+            0,
+            this.percentLearned.toString().length + 1,
+            calculatedBoundText
+        )
+
+        val xCenterCirclePercent = this.width.toFloat() - this.height / 2.toFloat()
+        val yCenterCirclePercent = this.height / 2.toFloat()
+
+        this.locationTextPercent.x =
+            (xCenterCirclePercent - paintPercentText.measureText(this.percentLearned.toString() + "%") / 2).toInt()
+        this.locationTextPercent.y =
+            (yCenterCirclePercent + calculatedBoundText.height() / 2).toInt()
     }
 }

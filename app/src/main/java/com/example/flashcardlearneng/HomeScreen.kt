@@ -3,12 +3,12 @@ package com.example.flashcardlearneng
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.flashcardlearneng.model.Category
+import kotlinx.android.synthetic.main.activity_main.*
 
-class HomeScreen: AppCompatActivity() {
+class HomeScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-            Category("123",3,4).wordTotal = 123
+        Category("123", 3, 4).wordTotal = 123
     }
 
 }
