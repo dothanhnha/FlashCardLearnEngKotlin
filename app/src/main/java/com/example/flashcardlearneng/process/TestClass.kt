@@ -4,20 +4,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.flashcardlearneng.R
-import com.example.flashcardlearneng.model.Category
-import kotlinx.android.synthetic.main.item_category.view.*
-import java.util.*
+import kotlinx.android.synthetic.main.item_test.view.*
 
 
-class CategoryAdapter(private var dataset: ArrayList<Category>) :
-    RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class TestClass(private var dataset: ArrayList<String>) :
+    RecyclerView.Adapter<TestClass.CategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view: View = inflater.inflate(R.layout.item_category, parent, false)
+        val view: View = inflater.inflate(R.layout.item_test, parent, false)
         Log.d("recyclerView","oncreateView")
+
         return CategoryViewHolder(view)
     }
 
@@ -29,8 +29,9 @@ class CategoryAdapter(private var dataset: ArrayList<Category>) :
     }
 
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindView(data:Category){
-            itemView.categoryView.data = data
+        fun bindView(data: String) {
+            itemView.findViewById<TextView>(R.id.textViewTest).setText(data)
+
         }
     }
 
